@@ -1,4 +1,4 @@
-import { errorMiddleware } from "@/utils/middleware/error-middleware";
+import { errorHandler } from "@/utils/middleware/error-handler";
 import { CreatePostRequest } from "@/utils/model/post-model";
 import { ApiResponse } from "@/utils/response/response";
 import { PostService } from "@/utils/service/post-service";
@@ -22,7 +22,7 @@ export default async function handler(
 
       res.status(201).json(apiResponse.toJson());
     } catch (error) {
-      errorMiddleware(error as Error, res);
+      errorHandler(error as Error, res);
     }
   } else if (req.method === "GET") {
     try {
@@ -36,7 +36,7 @@ export default async function handler(
       );
       res.status(200).json(apiResponse.toJson());
     } catch (error) {
-      errorMiddleware(error as Error, res);
+      errorHandler(error as Error, res);
     }
   } else {
     res.status(405).json({

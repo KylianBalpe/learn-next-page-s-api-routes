@@ -1,6 +1,6 @@
-import { errorMiddleware } from "@/utils/middleware/error-middleware";
+import { errorHandler } from "@/utils/middleware/error-handler";
 import { UpdatePostRequest } from "@/utils/model/post-model";
-import { ApiResponse, ResponseError } from "@/utils/response/response";
+import { ApiResponse } from "@/utils/response/response";
 import { PostService } from "@/utils/service/post-service";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -22,9 +22,9 @@ export default async function handler(
 
       res.status(200).json(apiResponse.toJson());
     } catch (error) {
-      errorMiddleware(error as Error, res);
+      errorHandler(error as Error, res);
     }
-  } else if (req.method === "PATCH") {
+  } else if (req.method === "PUT") {
     try {
       const request: UpdatePostRequest = req.body as UpdatePostRequest;
       request.id = Number(req.query.id);
@@ -38,7 +38,7 @@ export default async function handler(
       );
       res.status(200).json(apiResponse.toJson());
     } catch (error) {
-      errorMiddleware(error as Error, res);
+      errorHandler(error as Error, res);
     }
   } else if (req.method === "DELETE") {
     try {
@@ -51,9 +51,10 @@ export default async function handler(
         "Post deleted successfully",
         response,
       );
+
       res.status(200).json(apiResponse.toJson());
     } catch (error) {
-      errorMiddleware(error as Error, res);
+      errorHandler(error as Error, res);
     }
   } else {
     res.status(405).json({
